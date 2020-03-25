@@ -1,0 +1,44 @@
+<div class="span12">
+    <h2>Choose the message you want to send </h2>
+</div>
+<div class="span12">
+    <form action="send" method="post" class="form-horizontal" col-sm-2>
+        @foreach (var item in ViewBag.Messages)
+        {
+            // bg-info text-white
+            <div class="card bg-info text-white mt-3">
+                <div class="form-check mt-1">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="radio" value="@item.Text">
+                        "@item.Text"
+                    </label>
+                </div>
+            </div>
+        }
+        <div class="form-check mt-3 col-lg-12">
+            @* <label class="form-check-label col-lg-12"> *@
+            <input id="customTextRadio" class="form-check-input" type="radio" name="radio" checked>
+            <input id="customText" class="form-control" type="text" name="other_message" required>
+            @* </label> *@
+        </div>
+        <input type="submit" style="background-color: #555555;" class="btn btn-secondary col-12 mt-3" name="submitInput" value="Submit form"
+               onclick="myFunction()">
+        @* <a href="/" style="color: #95999c">Change receiver list</a> *@
+    </form>
+</div>
+
+<script>
+    function myFunction() {
+        let text = document.getElementById("customText").value;
+        console.log(text);
+        document.getElementById("customTextRadio").value = text;
+    }
+
+    $('input[name="radio"]').change(function () {
+        if($("#customTextRadio").is(':checked')) {
+            $('#customText').attr('required', true);
+        } else {
+            $('#customText').removeAttr('required');
+        }
+    });
+</script>

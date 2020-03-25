@@ -1,0 +1,185 @@
+﻿<h2>Workers List</h2>
+<table class="table table-striped table-dark" id="mytable">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Department</th>
+        <th>Salary</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in ViewBag.Users)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Position</td>
+            <td>@item.Department</td>
+            <td>@item.Salary</td>
+            <td>@item.Email</td>
+            <td>
+                <a href="javascript:void(0);" class="btn btn-sm btn-outline-info edit" data-id="@item.Id"
+                   data-name="@item.Name" data-position="@item.Position"
+                   data-department="@item.Department" data-salary="@item.Salary" data-email="@item.Email">
+                    Edit
+                </a>
+                <a href="javascript:void(0);" class="btn btn-sm btn-outline-danger delete"
+                   data-id="@item.Id">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<button class="btn btn-outline-success col-12" data-toggle="modal" data-target="#myModalAdd">Add New</button>
+@* <button type="button" class="btn btn-outline-success col-12" onclick="location.href = '/send';"> Spam *@
+@* </button> *@
+<!-- Modal Add Product-->
+<form action="/save" method="post">
+    <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Receiver</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" placeholder="Worker Name"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="position" class="form-control" placeholder="Worker Position"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="department" class="form-control" placeholder="Worker Department"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="salary" class="form-control" placeholder="Worker Salary"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="email" class="form-control" placeholder="Worker Email"
+                               required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- Modal Update Product-->
+<form action="/update" method="post">
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Worker</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control worker_name"
+                               placeholder="Worker Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="position" class="form-control worker_position"
+                               placeholder="Worker Position" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="department" class="form-control worker_department"
+                               placeholder="Worker Department" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="salary" class="form-control worker_salary"
+                               placeholder="Worker Salary" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="email" class="form-control worker_email"
+                               placeholder="Worker Email" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" class="worker_id">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Modal Delete Product-->
+<form id="add-row-form" action="/delete" method="post">
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Delete Worker</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span
+                            aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <strong>Are you sure to delete this data?</strong>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" class="form-control worker_id2" required>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!--border: 2px solid #4CAF50; background-color: white-->
+
+<script src="/public/js/jquery-3.3.1.js"></script>
+<script src="/public/js/bootstrap.js"></script>
+<script>
+    $(document).ready(function () {
+        // showig data to edit modal
+        $('#mytable').on('click', '.edit', function () {
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let position = $(this).data('position');
+            let department = $(this).data('department');
+            let salary = $(this).data('salary');
+            let email = $(this).data('email');
+            $('#EditModal').modal('show');
+            $('.worker_name').val(name);
+            $('.worker_position').val(position);
+            $('.worker_department').val(department);
+            $('.worker_salary').val(salary);
+            $('.worker_email').val(email);
+            $('.worker_id').val(id);
+        });
+        //showing delete record modal
+        $('#mytable').on('click', '.delete', function () {
+            let worker_id = $(this).data('id');
+            $('#DeleteModal').modal('show');
+            $('.worker_id2').val(worker_id);
+        });
+
+    })
+</script>
